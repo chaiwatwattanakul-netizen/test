@@ -518,11 +518,18 @@
                 allQ.push(allQ[Math.floor(Math.random() * allQ.length)]); // จำลองข้อมูลให้ครบ 100 ข้อ
             }
 
-            final10Questions = allQ
-                .sort(() => 0.5 - Math.random())
+// ไม่สุ่มลำดับข้อ และไม่สุ่มตัวเลือก (ดึงมา 10 ข้อแรกตามลำดับ)
+            final100Questions = [...p1, ...p2, ...p3, ...p4]
                 .map(q => ({
                     ...q,
-                    shuffledOptions: [...q.options].sort(() => 0.5 - Math.random())
+                    shuffledOptions: [...q.options] // เก็บตัวเลือกลำดับเดิมไว้
+                }))                       
+            
+            final10Questions = allQ
+               
+                .map(q => ({
+                    ...q,
+                    shuffledOptions: [...q.options]
                 }))
                 .slice(0, 10);
 
