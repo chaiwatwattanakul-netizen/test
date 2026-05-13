@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ข้อสอบกลางภาค: วิศวกรรมเครื่องมือกล (10 ข้อ)</title>
+    <title>ข้อสอบกลางภาค: วิศวกรรมเครื่องมือกล (100 ข้อ)</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -72,7 +72,7 @@
                     </svg>
                 </div>
                 <h1 class="text-2xl md:text-3xl font-bold text-slate-800 mb-2">ข้อสอบกลางภาควิชาวิศวกรรมเครื่องมือกล</h1>
-                <p class="text-slate-500">(Machine Tool Engineering) - จำนวน 10 ข้อ (โหมดทดสอบ)</p>
+                <p class="text-slate-500">(Machine Tool Engineering) - จำนวน 100 ข้อ (โหมดทดสอบ)</p>
             </div>
             
             <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-6 max-w-md mx-auto mb-8 text-left">
@@ -82,7 +82,7 @@
                 </h3>
                 <ul class="text-xs text-amber-700 list-disc list-inside space-y-1 ml-1">
                     <li>ใช้บัญชี <b>Gmail</b> ในการระบุตัวตน</li>
-                    <li>ข้อสอบมี 10 ข้อ (สุ่มจากคลัง 100 ข้อเพื่อทดสอบระบบ)</li>
+                    <li>ข้อสอบมี 100 ข้อ (สุ่มจากคลัง 100 ข้อเพื่อทดสอบระบบ)</li>
                     <li>ห้ามสลับแท็บหรือพับหน้าจอเด็ดขาด (ระบบจะบันทึกการทุจริต)</li>            
                     <li>สามารถกดย้อนกลับเพื่อแก้ไขคำตอบได้</li>
                 </ul>
@@ -166,7 +166,7 @@
             <p class="text-slate-500 mb-8">บันทึกข้อมูลของคุณลงในระบบเรียบร้อยแล้ว</p>
             
             <div class="bg-slate-50 rounded-2xl p-6 max-w-sm mx-auto mb-8 border border-slate-200">
-                <p class="text-sm text-slate-500 mb-1">จำนวนข้อสอบทั้งหมด 10 ข้อ</p>
+                <p class="text-sm text-slate-500 mb-1">จำนวนข้อสอบทั้งหมด 100 ข้อ</p>
                 <p class="text-base font-medium text-slate-700 uppercase tracking-wider mb-2">คะแนนที่คุณได้</p>
                 <div class="text-6xl font-black text-blue-600 mb-4" id="final-score">0</div>
                 
@@ -512,10 +512,10 @@
             const p3 = bank3.map(item => ({ ...item, category: "เกจวัด" }));
             const p4 = bank4.map(item => ({ ...item, category: "ระบบส่งกำลัง" }));
 
-            // สุ่ม 10 ข้อ
+            // สุ่ม 100 ข้อ
             const allQ = [...p1, ...p2, ...p3, ...p4];
-            while (allQ.length < 10) {
-                allQ.push(allQ[Math.floor(Math.random() * allQ.length)]); // จำลองข้อมูลให้ครบ 10 ข้อ
+            while (allQ.length < 100) {
+                allQ.push(allQ[Math.floor(Math.random() * allQ.length)]); // จำลองข้อมูลให้ครบ 100 ข้อ
             }
 
             final10Questions = allQ
