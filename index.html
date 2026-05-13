@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ข้อสอบกลางภาค: วิศวกรรมเครื่องมือกล (10 ข้อ)</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- SheetJS (Excel Export) -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .option-btn {
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .option-btn.selected {
+            border-color: #2563eb;
+            background-color: #dbeafe;
+            box-shadow: 0 0 0 2px #bfdbfe;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4 md:p-8 relative">
+
+    <!-- Admin Login Button -->
+    <button onclick="showAdmin()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors" title="สำหรับผู้สอน">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+    </button>
+
+    <div class="w-full max-w-3xl glass-panel rounded-3xl p-6 md:p-10 relative overflow-hidden">
+        
+        <!-- Loading Screen -->
+        <div id="loading-page" class="text-center py-20 hidden">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+            <h2 class="text-xl font-semibold text-slate-700" id="loading-text">กำลังประมวลผลข้อมูล...</h2>
+        </div>
+
+        <!-- 1. Start Page (Login) -->
+        <div id="start-page" class="text-center">
+            <div class="mb-8">
+                <div class="bg-blue-100 text-blue-700 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-800 mb-2">ข้อสอบกลางภาควิชาวิศวกรรมเครื่องมือกล</h1>
+                <p class="text-slate-500">(Machine Tool Engineering) - จำนวน 10 ข้อ (โหมดทดสอบ)</p>
+            </div>
+            
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-6 max-w-md mx-auto mb-8 text-left">
+                <h3 class="text-amber-800 font-semibold text-sm flex items-center mb-1">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    กฎการสอบ:
+                </h3>
+                <ul class="text-xs text-amber-700 list-disc list-inside space-y-1 ml-1">
+                    <li>ใช้บัญชี <b>Gmail</b> ในการระบุตัวตน</li>
+                    <li>ข้อสอบมี 10 ข้อ (สุ่มจากคลัง 100 ข้อเพื่อทดสอบระบบ)</li>
+                    <li>ห้ามสลับแท็บหรือพับหน้าจอเด็ดขาด (ระบบจะบันทึกการทุจริต)</li>            
+                    <li>สามารถกดย้อนกลับเพื่อแก้ไขคำตอบได้</li>
+                </ul>
+            </div>
+
+            <!-- ปุ่มล็อคอิน -->
+            <div class="flex flex-col gap-3 max-w-md mx-auto">
+                <!-- ล็อกอิน Google (ตัวจริง) -->
+                <button id="btn-google-login" onclick="loginWithGoogle()" class="w-full bg-white border-2 border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-4 rounded-xl shadow-sm hover:shadow transition-all active:scale-95 text-lg flex items-center justify-center hidden">
+                    <svg class="w-6 h-6 mr-3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                    ลงชื่อเข้าใช้ด้วย Google
+                </button>
+                
+                <!-- ปุ่มเสริมสำหรับทดสอบระบบ (Bypass) -->
+                <button id="btn-test-login" onclick="loginTestMode()" class="w-full bg-slate-800 border-2 border-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl shadow-sm hover:shadow transition-all active:scale-95 text-base flex items-center justify-center hidden">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    เข้าสู่ระบบโหมดทดสอบ (ไม่ต้องใช้ Google)
+                </button>
+            </div>
+
+            <!-- ฟอร์มกรอกรหัส (จะแสดงหลังล็อคอิน) -->
+            <div id="student-form" class="hidden space-y-4 max-w-md mx-auto text-left mt-6 animate-fade-in">
+                <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-center">
+                    <img id="user-profile-pic" src="" class="w-12 h-12 rounded-full border-2 border-white shadow-sm mr-4" alt="Profile">
+                    <div>
+                        <p class="text-sm text-blue-600 font-semibold" id="user-display-name">ชื่อผู้ใช้งาน</p>
+                        <p class="text-xs text-slate-500" id="user-email">email@gmail.com</p>
+                    </div>
+                    <button onclick="logout()" class="ml-auto text-xs bg-white text-slate-500 hover:text-red-500 px-3 py-1 rounded-full border shadow-sm transition-colors">เปลี่ยนบัญชี</button>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">รหัสนักศึกษา (Student ID) <span class="text-red-500">*</span></label>
+                    <input type="text" id="student-id" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" placeholder="กรอกรหัสนักศึกษา 13 หลัก" required>
+                </div>
+                
+                <button onclick="startQuiz()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-95 text-lg mt-4">
+                    เริ่มทำข้อสอบ
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. Quiz Page -->
+        <div id="quiz-page" class="hidden">
+            <div class="flex justify-between items-end mb-6 border-b pb-4">
+                <div>
+                    <p class="text-sm text-slate-500 font-medium mb-1">ผู้สอบ: <span id="display-name" class="text-blue-600"></span></p>
+                    <h2 class="text-xl font-bold text-slate-800">ข้อที่ <span id="current-question-num">1</span> / 10</h2>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-slate-500 font-medium mb-1">เวลา</p>
+                    <div id="timer" class="text-xl font-mono font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded-lg">00:00</div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 id="question-text" class="text-lg md:text-xl font-medium text-slate-800 mb-6 leading-relaxed"></h3>
+                <div id="options-container" class="space-y-3">
+                    <!-- ตัวเลือกจะถูกสร้างด้วย JavaScript -->
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between pt-4 border-t items-center gap-4">
+                <div class="text-sm text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-lg w-full sm:w-auto text-center" id="category-badge">หมวด: -</div>
+                <div class="flex space-x-2 w-full sm:w-auto">
+                    <button id="prev-btn" onclick="prevQuestion()" class="hidden px-6 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl transition-all hover:bg-slate-200 w-1/2 sm:w-auto">
+                        ย้อนกลับ
+                    </button>
+                    <button id="next-btn" onclick="nextQuestion()" disabled class="px-8 py-3 bg-slate-200 text-slate-400 font-bold rounded-xl transition-all cursor-not-allowed w-1/2 sm:w-auto flex-1">
+                        กรุณาเลือกคำตอบ
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Result Page -->
+        <div id="result-page" class="hidden text-center py-8">
+            <div class="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h2 class="text-3xl font-bold text-slate-800 mb-2">ส่งข้อสอบสำเร็จ!</h2>
+            <p class="text-slate-500 mb-8">บันทึกข้อมูลของคุณลงในระบบเรียบร้อยแล้ว</p>
+            
+            <div class="bg-slate-50 rounded-2xl p-6 max-w-sm mx-auto mb-8 border border-slate-200">
+                <p class="text-sm text-slate-500 mb-1">จำนวนข้อสอบทั้งหมด 10 ข้อ</p>
+                <p class="text-base font-medium text-slate-700 uppercase tracking-wider mb-2">คะแนนที่คุณได้</p>
+                <div class="text-6xl font-black text-blue-600 mb-4" id="final-score">0</div>
+                
+                <div class="flex justify-between items-center text-sm border-t pt-3 text-slate-600">
+                    <span>ใช้เวลาไป: <strong id="final-time">00:00</strong></span>
+                    <span>เตือนทุจริต: <strong id="final-cheats" class="text-red-500">0</strong> ครั้ง</span>
+                </div>
+            </div>
+            
+            <button onclick="logoutAndReload()" class="text-blue-600 font-medium hover:underline">ออกจากระบบและกลับหน้าแรก</button>
+        </div>
+
+        <!-- 4. Admin Page -->
+        <div id="admin-page" class="hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">แผงควบคุมสำหรับผู้สอน</h2>
+                <div class="space-x-2 flex">
+                    <button onclick="exportToExcel()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium shadow transition-colors text-sm flex items-center inline-flex mr-2">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Export Excel
+                    </button>
+                    <button onclick="closeAdmin()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg font-medium transition-colors text-sm">ปิด</button>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto bg-white rounded-xl shadow-sm border border-slate-200 max-h-96">
+                <table id="results-table" class="w-full text-left border-collapse relative">
+                    <thead class="sticky top-0 bg-slate-50 shadow-sm z-10">
+                        <tr class="text-slate-600 text-sm border-b">
+                            <th class="p-4 font-semibold">เวลาที่ส่ง</th>
+                            <th class="p-4 font-semibold">รหัสนักศึกษา</th>
+                            <th class="p-4 font-semibold">ชื่อ (Google)</th>
+                            <th class="p-4 font-semibold">อีเมล (Gmail)</th>
+                            <th class="p-4 font-semibold text-center">คะแนน (เต็ม 10)</th>
+                            <th class="p-4 font-semibold text-center">เวลาที่ใช้</th>
+                            <th class="p-4 font-semibold text-center">ทุจริต</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-tbody" class="text-sm">
+                        <!-- ข้อมูลจะถูกเติมด้วย JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        // นำเข้าฟังก์ชัน signInAnonymously เพิ่มเติมสำหรับโหมดทดสอบ
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, serverTimestamp, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC1Wsd5bIhccqbRpJTocjC4X2cSawwtO44",
+            authDomain: "machinetoolquiz1.firebaseapp.com",
+            projectId: "machinetoolquiz1",
+            storageBucket: "machinetoolquiz1.firebasestorage.app",
+            messagingSenderId: "990646369365",
+            appId: "1:990646369365:web:c4b9934fbf7d2be32a68dc",
+            measurementId: "G-WFMFMFK1EJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        // โหลดหน้าแรก เริ่มเช็ค Auth ทันที
+        const loadingPage = document.getElementById('loading-page');
+        const startPage = document.getElementById('start-page');
+        const loadingText = document.getElementById('loading-text');
+
+        if(loadingPage) loadingPage.classList.remove('hidden');
+        if(startPage) startPage.classList.add('hidden');
+        if(loadingText) loadingText.textContent = "กำลังตรวจสอบการเชื่อมต่อ...";
+
+        // ตรวจสอบว่าผู้ใช้เคยล็อคอินค้างไว้หรือไม่
+        onAuthStateChanged(auth, (user) => {
+            if(loadingPage) loadingPage.classList.add('hidden');
+            if(startPage) startPage.classList.remove('hidden');
+            
+            if (user) {
+                // เข้าสู่ระบบแล้ว (ไม่ว่าจะด้วย Google หรือ โหมดทดสอบ)
+                showStudentForm(user);
+            } else {
+                // ถ้ายังไม่ล็อคอิน ให้แสดงปุ่ม Login
+                const btnGoogleLogin = document.getElementById('btn-google-login');
+                const btnTestLogin = document.getElementById('btn-test-login');
+                const studentForm = document.getElementById('student-form');
+                if(btnGoogleLogin) btnGoogleLogin.classList.remove('hidden');
+                if(btnTestLogin) btnTestLogin.classList.remove('hidden');
+                if(studentForm) studentForm.classList.add('hidden');
+            }
+        });
+
+        // ฟังก์ชันล็อคอิน Google (ตัวจริง)
+        window.loginWithGoogle = async function() {
+            try {
+                switchPage('start-page', 'loading-page');
+                const lt = document.getElementById('loading-text');
+                if(lt) lt.textContent = "กำลังเชื่อมต่อกับ Google...";
+                
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                
+                switchPage('loading-page', 'start-page');
+                showStudentForm(user);
+            } catch (error) {
+                switchPage('loading-page', 'start-page');
+                console.error("Login Error:", error);
+                
+                // แจ้งเตือนพร้อมบอกชื่อโดเมนที่ต้องเอาไปเพิ่มใน Firebase
+                if (error.code === 'auth/unauthorized-domain') {
+                    const currentDomain = window.location.hostname;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'โดเมนยังไม่ได้รับอนุญาต',
+                        html: `หน้าต่างนี้ทำงานอยู่บนโดเมน:<br><br><b class="text-blue-600 text-lg">${currentDomain}</b><br><br><p class="text-sm text-slate-600 mt-2 text-left"><b>วิธีแก้:</b> นำชื่อโดเมนสีน้ำเงินด้านบนนี้ ไปเพิ่มที่เมนู <br>Firebase > Authentication > Settings > Authorized domains<br><br><i>* หรือหากไม่อยากตั้งค่าตอนนี้ ให้กดปุ่ม <b>"โหมดทดสอบ"</b> สีดำแทนครับ</i></p>`,
+                        confirmButtonText: 'ตกลง'
+                    });
+                } else if (error.code !== 'auth/popup-closed-by-user') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ล็อคอินไม่สำเร็จ',
+                        html: `อาจติดปัญหา Popup Block หรือเครือข่าย<br><span class="text-sm text-red-500">${error.message}</span>`
+                    });
+                }
+            }
+        };
+
+        // ฟังก์ชันเข้าสู่ระบบโหมดทดสอบ (แก้ปัญหาล็อคอินไม่ผ่าน)
+        window.loginTestMode = async function() {
+            try {
+                switchPage('start-page', 'loading-page');
+                const lt = document.getElementById('loading-text');
+                if(lt) lt.textContent = "กำลังเข้าสู่ระบบโหมดทดสอบ...";
+                
+                // ใช้ Anonymous Auth แบบเดิมเพื่อไม่ให้ติด Error
+                const result = await signInAnonymously(auth);
+                const user = result.user;
+                
+                switchPage('loading-page', 'start-page');
+                showStudentForm(user);
+            } catch (error) {
+                switchPage('loading-page', 'start-page');
+                console.error("Test Mode Login Error:", error);
+                Swal.fire('Error', error.message, 'error');
+            }
+        };
+
+        // ฟังก์ชันออกจากระบบ
+        window.logout = async function() {
+            try {
+                const activePage = getCurrentPageId();
+                switchPage(activePage, 'loading-page');
+                
+                const lt = document.getElementById('loading-text');
+                if(lt) lt.textContent = "กำลังออกจากระบบ...";
+                
+                await signOut(auth);
+                studentData = { id: "", name: "", email: "", uid: "" };
+                
+                const btnGoogleLogin = document.getElementById('btn-google-login');
+                const btnTestLogin = document.getElementById('btn-test-login');
+                const studentForm = document.getElementById('student-form');
+                const studentIdInput = document.getElementById('student-id');
+                
+                if(btnGoogleLogin) btnGoogleLogin.classList.remove('hidden');
+                if(btnTestLogin) btnTestLogin.classList.remove('hidden');
+                if(studentForm) studentForm.classList.add('hidden');
+                if(studentIdInput) studentIdInput.value = "";
+                
+                switchPage('loading-page', 'start-page');
+            } catch (error) {
+                console.error("Logout Error:", error);
+                switchPage('loading-page', 'start-page');
+            }
+        };
+
+        window.logoutAndReload = async function() {
+            await signOut(auth);
+            location.reload();
+        }
+
+        // แสดงฟอร์มกรอกข้อมูลหลังจากได้ข้อมูล Google แล้ว
+        function showStudentForm(user) {
+            const btnGoogleLogin = document.getElementById('btn-google-login');
+            const btnTestLogin = document.getElementById('btn-test-login');
+            const studentForm = document.getElementById('student-form');
+            if(btnGoogleLogin) btnGoogleLogin.classList.add('hidden');
+            if(btnTestLogin) btnTestLogin.classList.add('hidden');
+            if(studentForm) studentForm.classList.remove('hidden');
+            
+            // ตั้งค่าชื่อจำลองหากเป็นโหมดทดสอบ
+            const dName = user.isAnonymous ? "นักศึกษา (โหมดทดสอบ)" : (user.displayName || "ไม่มีชื่อ");
+            const dEmail = user.isAnonymous ? "test.mode@mock.com" : (user.email || "ไม่มีอีเมล");
+            const dPhoto = user.photoURL || ("https://ui-avatars.com/api/?name=" + encodeURIComponent(dName));
+
+            // แสดงข้อมูลผู้ใช้
+            const dispNameEl = document.getElementById('user-display-name');
+            const emailEl = document.getElementById('user-email');
+            const profilePicEl = document.getElementById('user-profile-pic');
+            
+            if(dispNameEl) dispNameEl.textContent = dName;
+            if(emailEl) emailEl.textContent = dEmail;
+            if(profilePicEl) profilePicEl.src = dPhoto;
+            
+            // เก็บข้อมูลไว้รอส่ง
+            studentData.name = dName;
+            studentData.email = dEmail;
+            studentData.uid = user.uid;
+        }
+
+        // ==========================================
+        // คลังข้อสอบทั้งหมด 100 ข้อ
+        // ==========================================
+        
+        // 1. หมวด: การตัดเฉือนด้วยเครื่องมือกล (25 ข้อ)
+        const bank1 = [
+            { q: "เครื่องมือกลชนิดใดใช้สำหรับการตัดเฉือนชิ้นงานทรงกระบอกเป็นหลัก?", options: ["เครื่องกลึง", "เครื่องกัด", "เครื่องเจาะ", "เครื่องเจียระไน"], ans: "เครื่องกลึง" },
+            { q: "วัสดุทำเครื่องมือตัดชนิดใดที่ทนอุณหภูมิสูงได้ดีที่สุดโดยไม่สูญเสียความแข็ง?", options: ["เซรามิก", "HSS", "คาร์ไบด์", "เหล็กคาร์บอน"], ans: "เซรามิก" },
+            { q: "กระบวนการกัด (Milling) แบบใดที่ทิศทางการป้อนชิ้นงานสวนทางกับทิศทางการหมุนของมีดกัด?", options: ["Up Milling (การกัดทวน)", "Down Milling (การกัดตาม)", "Face Milling", "End Milling"], ans: "Up Milling (การกัดทวน)" },
+            { q: "มุมใดของมีดกลึงที่มีหน้าที่หลักในการลดการเสียดสีระหว่างพื้นผิวชิ้นงานกับตัวมีด?", options: ["มุมหลบ (Clearance Angle)", "มุมคาย (Rake Angle)", "มุมรวมคมตัด (Lip Angle)", "มุมตัด (Cutting Angle)"], ans: "มุมหลบ (Clearance Angle)" },
+            { q: "ข้อใดคือหน้าที่หลักของน้ำยาหล่อเย็น (Coolant) ในงานตัดเฉือน?", options: ["ลดความร้อนและหล่อลื่น", "เพิ่มความแข็งให้ชิ้นงาน", "ทำให้เศษตัดมีขนาดใหญ่ขึ้น", "ล้างคราบสนิมบนเครื่องจักร"], ans: "ลดความร้อนและหล่อลื่น" },
+            { q: "การเกิดพอกติดคมตัด (Built-up Edge: BUE) มักจะเกิดขึ้นเมื่อใด?", options: ["ตัดเฉือนวัสดุเหนียวด้วยความเร็วตัดต่ำ", "ตัดเฉือนวัสดุเปราะด้วยความเร็วตัดสูง", "ใช้น้ำยาหล่อเย็นมากเกินไป", "ใช้มุมคายเป็นบวกมากๆ"], ans: "ตัดเฉือนวัสดุเหนียวด้วยความเร็วตัดต่ำ" },
+            { q: "การกลึงปอก (Turning) มีจุดประสงค์ที่แตกต่างจากการกลึงปาดหน้า (Facing) อย่างไร?", options: ["การกลึงปอกลดเส้นผ่านศูนย์กลาง การกลึงปาดหน้าลดความยาวชิ้นงาน", "การกลึงปอกทำเกลียว การกลึงปาดหน้าทำรูเจาะ", "การกลึงปอกใช้ความเร็วสูงกว่า การกลึงปาดหน้าใช้ความเร็วต่ำกว่า", "การกลึงปอกทำเฉพาะงานไม้ การกลึงปาดหน้าทำเฉพาะงานโลหะ"], ans: "การกลึงปอกลดเส้นผ่านศูนย์กลาง การกลึงปาดหน้าลดความยาวชิ้นงาน" },
+            { q: "อัตราการป้อน (Feed rate) ในกระบวนการกลึงชิ้นงาน มีหน่วยมาตรฐานตามข้อใด?", options: ["mm/rev", "mm/min", "m/s", "rpm"], ans: "mm/rev" },
+            { q: "ดอกสว่านร่องเกลียว (Twist Drill) ทั่วไปสำหรับเจาะเหล็ก มีมุมจิก (Point Angle) มาตรฐานกี่องศา?", options: ["118 องศา", "90 องศา", "135 องศา", "60 องศา"], ans: "118 องศา" },
+            { q: "รหัส G-Code ใดที่ใช้คำสั่งเคลื่อนที่ตัดชิ้นงานเป็นเส้นตรง (Linear Interpolation)?", options: ["G01", "G00", "G02", "G03"], ans: "G01" },
+            { q: "ปรากฏการณ์ Flank Wear เกิดขึ้นจากสาเหตุใดเป็นหลัก?", options: ["การเสียดสีระหว่างมีดกับชิ้นงาน", "ความร้อนละลายมีดทันที", "มุมคายที่ใหญ่เกินไป", "การใช้ความเร็วรอบต่ำเกินไป"], ans: "การเสียดสีระหว่างมีดกับชิ้นงาน" },
+            { q: "การคำนวณความเร็วตัด (Cutting Speed, V) ในงานกลึง ใช้สูตรข้อใด? (D=เส้นผ่าศูนย์กลาง, N=รอบ/นาที)", options: ["V = (π*D*N)/1000", "V = π*D*N", "V = (D*N)/100", "V = (π*D)/N"], ans: "V = (π*D*N)/1000" },
+            { q: "เครื่องกัด (Milling Machine) ประเภทใดที่เพลาหมุนมีดกัดอยู่ในแนวนอน?", options: ["Horizontal Milling Machine", "Vertical Milling Machine", "Universal Milling Machine", "Bed Type Milling Machine"], ans: "Horizontal Milling Machine" },
+            { q: "ลักษณะเศษกลึง (Chip) แบบใดที่บ่งบอกว่ากระบวนการตัดเฉือนทำงานได้มีประสิทธิภาพและปลอดภัย?", options: ["เศษขาดเป็นชิ้นเล็กๆ (Discontinuous)", "เศษยาวต่อเนื่องเป็นเส้น (Continuous)", "เศษม้วนยาวพันมีดกลึง", "เศษหลอมละลายติดชิ้นงาน"], ans: "เศษขาดเป็นชิ้นเล็กๆ (Discontinuous)" },
+            { q: "กระบวนการเจียระไน (Grinding) จัดเป็นการตัดเฉือนประเภทใด?", options: ["การตัดเฉือนด้วยคมตัดหลายคมแบบไม่แน่นอน", "การตัดเฉือนด้วยคมตัดเดี่ยว", "การตัดเฉือนด้วยคมตัดหลายคมแบบตายตัว", "การขึ้นรูปโดยไม่เสียเศษวัสดุ"], ans: "การตัดเฉือนด้วยคมตัดหลายคมแบบไม่แน่นอน" },
+            { q: "พารามิเตอร์ใดมีผลต่อ 'ความหยาบผิว' (Surface Roughness) ของชิ้นงานกลึงมากที่สุด?", options: ["อัตราป้อน (Feed Rate)", "ความลึกในการตัด (Depth of Cut)", "วัสดุของชิ้นงาน", "ความเร็วตัด (Cutting Speed)"], ans: "อัตราป้อน (Feed Rate)" },
+            { q: "กระบวนการ Reaming มีจุดประสงค์เพื่ออะไร?", options: ["ปรับปรุงผิวและขนาดรูเจาะให้แม่นยำขึ้น", "เจาะรูนำศูนย์", "ขยายขนาดรูให้ใหญ่ขึ้นมากๆ", "ทำเกลียวในรูเจาะ"], ans: "ปรับปรุงผิวและขนาดรูเจาะให้แม่นยำขึ้น" },
+            { q: "ข้อใดไม่ใช่คุณสมบัติที่สำคัญของวัสดุทำเครื่องมือตัด (Tool Material)?", options: ["ความเปราะสูง (High Brittleness)", "ความแข็งสูง (High Hardness)", "ทนความร้อน (Hot Hardness)", "ทนทานการสึกหรอ (Wear Resistance)"], ans: "ความเปราะสูง (High Brittleness)" },
+            { q: "อุปกรณ์ใดบนเครื่องกลึงที่ใช้จับยึดชิ้นงานทรงกระบอกได้รวดเร็วและศูนย์กลางแม่นยำ?", options: ["หัวจับแบบ 3 จับ (3-Jaw Chuck)", "หัวจับแบบ 4 จับ (4-Jaw Chuck)", "ยันศูนย์ (Tailstock Center)", "จานพา (Face Plate)"], ans: "หัวจับแบบ 3 จับ (3-Jaw Chuck)" },
+            { q: "Cutting Fluid ชนิดใดที่นิยมใช้ในงานที่ต้องการการหล่อลื่นมากกว่าการระบายความร้อน?", options: ["น้ำมันตัดกลึงล้วน (Straight Oil)", "น้ำมันสบู่ (Soluble Oil)", "สารเคมีสังเคราะห์ (Synthetic fluid)", "อากาศอัด (Compressed Air)"], ans: "น้ำมันตัดกลึงล้วน (Straight Oil)" },
+            { q: "กระบวนการทำเกลียวนอกบนเพลาด้วยเครื่องมือกลึง เรียกว่าอะไร?", options: ["Threading", "Tapping", "Boring", "Knurling"], ans: "Threading" },
+            { q: "ในงานกัด ร่องของมีดกัด (Flute) ทำหน้าที่อะไร?", options: ["คายเศษโลหะและนำน้ำยาหล่อเย็นเข้าสู่คมตัด", "ลดน้ำหนักของมีดกัด", "ใช้สำหรับจับยึดกับเพลา", "ป้องกันการสะท้านของเครื่องจักร"], ans: "คายเศษโลหะและนำน้ำยาหล่อเย็นเข้าสู่คมตัด" },
+            { q: "Chatter ในงานตัดเฉือนคืออะไร?", options: ["การสั่นสะท้านที่ทำให้ชิ้นงานเกิดรอยคลื่น", "ความร้อนที่เกิดจากการเสียดสี", "การแตกร้าวของมีดตัด", "เศษโลหะที่กระเด็นออก"], ans: "การสั่นสะท้านที่ทำให้ชิ้นงานเกิดรอยคลื่น" },
+            { q: "ในการเจาะรูชิ้นงานโลหะที่ต้องการความเที่ยงตรงของตำแหน่งสูง ควรทำขั้นตอนใดเป็นลำดับแรก?", options: ["เจาะด้วยดอกเจาะนำศูนย์ (Center Drill)", "เจาะด้วยดอกสว่านขนาดจริงทันที", "ใช้ดอกรีมเมอร์ (Reamer) นำร่อง", "ต๊าปเกลียว (Tap) เพื่อสร้างรอยนำ"], ans: "เจาะด้วยดอกเจาะนำศูนย์ (Center Drill)" },
+            { q: "เหล็กกล้าคาร์บอน (Carbon Steel) เมื่อนำมาใช้เป็นมีดกลึง มีข้อจำกัดที่สำคัญที่สุดคืออะไร?", options: ["สูญเสียความแข็งเมื่ออุณหภูมิสูงกว่า 200°C", "ราคาแพงเกินไป", "ไม่สามารถลับคมได้", "ทำปฏิกิริยาเคมีกับน้ำยาหล่อเย็น"], ans: "สูญเสียความแข็งเมื่ออุณหภูมิสูงกว่า 200°C" }
+        ];
+
+        // 2. หมวด: จิ๊กและฟิกเจอร์ (25 ข้อ)
+        const bank2 = [
+            { q: "ข้อใดคือหน้าที่หลักของจิ๊ก (Jig)?", options: ["จับยึดชิ้นงานและนำทางเครื่องมือตัด", "จับยึดชิ้นงานอย่างเดียว", "ลดความร้อนขณะทำงาน", "เพิ่มความเร็วรอบสปินเดิล"], ans: "จับยึดชิ้นงานและนำทางเครื่องมือตัด" },
+            { q: "หลักการ 3-2-1 ในงานจิ๊กฟิกเจอร์ คือหลักการเกี่ยวกับอะไร?", options: ["การกำหนดตำแหน่งชิ้นงาน (Locating)", "การคำนวณต้นทุนการผลิต", "การเลือกวัสดุมีดตัด", "การใช้น้ำยาหล่อเย็น"], ans: "การกำหนดตำแหน่งชิ้นงาน (Locating)" },
+            { q: "ฟิกเจอร์ (Fixture) แตกต่างจาก จิ๊ก (Jig) อย่างไร?", options: ["ฟิกเจอร์จับยึดชิ้นงานแต่ไม่นำทางเครื่องมือตัด", "ฟิกเจอร์ใช้กับงานไม้เท่านั้น", "ฟิกเจอร์นำทางมีดตัดอย่างเดียว ไม่จับชิ้นงาน", "ฟิกเจอร์มีราคาถูกกว่าเสมอ"], ans: "ฟิกเจอร์จับยึดชิ้นงานแต่ไม่นำทางเครื่องมือตัด" },
+            { q: "ตามหลักการกำหนดตำแหน่ง (Locating) วัตถุอิสระในอวกาศจะมีองศาอิสระ (Degrees of Freedom) ทั้งหมดกี่ทิศทาง?", options: ["12 ทิศทาง", "6 ทิศทาง", "3 ทิศทาง", "9 ทิศทาง"], ans: "12 ทิศทาง" },
+            { q: "ในหลักการ 3-2-1 หมุดอ้างอิง 3 ตัวแรกใช้เพื่อจำกัดการเคลื่อนที่กี่องศาอิสระ?", options: ["5 องศาอิสระ", "3 องศาอิสระ", "9 องศาอิสระ", "1 องศาอิสระ"], ans: "5 องศาอิสระ" },
+            { q: "อุปกรณจับยึด (Clamp) ที่ดีควรมีลักษณะอย่างไร?", options: ["จับยึดชิ้นงานได้แน่นโดยไม่ทำให้ชิ้นงานเสียรูป", "ใช้แรงบีบมหาศาลเพื่อป้องกันชิ้นงานขยับเด็ดขาด", "ต้องใช้ประแจขันเสมอ", "ติดตั้งให้ห่างจากจุดที่ถูกตัดเฉือนให้มากที่สุด"], ans: "จับยึดชิ้นงานได้แน่นโดยไม่ทำให้ชิ้นงานเสียรูป" },
+            { q: "Drill Bushing ในงานจิ๊ก มีหน้าที่อะไร?", options: ["นำทางดอกสว่านให้เจาะตรงตำแหน่ง", "จับยึดชิ้นงานไม่ให้หลุด", "พ่นน้ำยาหล่อเย็น", "กำหนดจุดอ้างอิงชิ้นงาน"], ans: "นำทางดอกสว่านให้เจาะตรงตำแหน่ง" },
+            { q: "หมุดอ้างอิงชนิดใดที่ออกแบบมาเพื่อป้องกันการติดขัด (Jamming) เมื่อรูชิ้นงานคลาดเคลื่อน?", options: ["Diamond Pin", "Round Pin", "Dowel Pin", "Taper Pin"], ans: "Diamond Pin" },
+            { q: "ข้อใดคือการออกแบบเพื่อ 'ป้องกันความผิดพลาด' ในงานจิ๊กฟิกเจอร์?", options: ["Fool-proofing (Poka-Yoke)", "Mass Production", "Standardization", "Tolerance Control"], ans: "Fool-proofing (Poka-Yoke)" },
+            { q: "ข้อใดไม่ใช่หลักการทางเศรษฐศาสตร์ในการสร้างจิ๊กฟิกเจอร์?", options: ["ควรสร้างจิ๊กฟิกเจอร์สำหรับงานผลิตชิ้นเดียว (Job Shop)", "จิ๊กต้องมีราคาต่ำกว่าต้นทุนที่ประหยัดได้", "ใช้อุปกรณ์มาตรฐานที่มีขายทั่วไป", "ออกแบบให้ใช้งานได้รวดเร็ว"], ans: "ควรสร้างจิ๊กฟิกเจอร์สำหรับงานผลิตชิ้นเดียว (Job Shop)" },
+            { q: "Leaf Jig เป็นจิ๊กที่มีลักษณะเฉพาะอย่างไร?", options: ["มีแผ่นฝาปิดเปิดได้คล้ายบานพับ", "ทำจากใบไม้สังเคราะห์", "เป็นกล่องสี่เหลี่ยมปิดทึบ", "มีรูปร่างเป็นแผ่นเรียบวงกลม"], ans: "มีแผ่นฝาปิดเปิดได้คล้ายบานพับ" },
+            { q: "Toggle Clamp นิยมใช้ในงานจิ๊กฟิกเจอร์เพราะเหตุใด?", options: ["ล็อกและปลดล็อกได้รวดเร็ว", "ให้แรงหนีบที่สูงที่สุดกว่าแคลมป์ทุกชนิด", "สามารถนำทางมีดตัดได้ด้วย", "ทนความร้อนสูงพิเศษ"], ans: "ล็อกและปลดล็อกได้รวดเร็ว" },
+            { q: "V-Block มักใช้เป็นตัวกำหนดตำแหน่ง (Locator) สำหรับชิ้นงานรูปทรงใด?", options: ["ทรงกระบอก (Cylindrical)", "ทรงลูกบาศก์ (Cubical)", "แผ่นเรียบ (Flat Plate)", "ทรงสามเหลี่ยม (Triangular)"], ans: "ทรงกระบอก (Cylindrical)" },
+            { q: "แรงในการตัดเฉือน (Cutting Force) ควรมีทิศทางกระทำต่อส่วนใดของจิ๊กฟิกเจอร์เป็นหลัก?", options: ["กระทำเข้าหาตัวกำหนดตำแหน่งแบบทึบ (Solid Locator)", "กระทำต้านกับแคลมป์ (Clamp) โดยตรง", "กระทำลงบนพื้นที่ว่างเปล่า", "กระทำเข้าหาเกลียวของสกรูยึด"], ans: "กระทำเข้าหาตัวกำหนดตำแหน่งแบบทึบ (Solid Locator)" },
+            { q: "วัสดุที่นิยมนำมาทำ Drill Bushing คือข้อใด?", options: ["เหล็กกล้าชุบแข็ง (Hardened Steel)", "อลูมิเนียม (Aluminum)", "ทองเหลือง (Brass)", "พลาสติกวิศวกรรม (Engineering Plastic)"], ans: "เหล็กกล้าชุบแข็ง (Hardened Steel)" },
+            { q: "จิ๊กเจาะรูประเภทใดที่ใช้ครอบลงบนชิ้นงานโดยตรงโดยไม่มีแผ่นรองพื้น?", options: ["Plate Jig", "Box Jig", "Trunnion Jig", "Channel Jig"], ans: "Plate Jig" },
+            { q: "ข้อใดคือวัตถุประสงค์หลักของการใช้ จิ๊กและฟิกเจอร์ ในอุตสาหกรรม?", options: ["เพิ่มความแม่นยำและลดเวลาการทำงาน (Interchangeability)", "ลดอัตราการใช้พลังงานไฟฟ้าของเครื่องจักร", "เพิ่มอายุการใช้งานของมีดตัด", "เพิ่มความสวยงามให้ชิ้นงาน"], ans: "เพิ่มความแม่นยำและลดเวลาการทำงาน (Interchangeability)" },
+            { q: "Strap Clamp อาศัยหลักการใดทางกลศาสตร์ในการจับยึดชิ้นงาน?", options: ["หลักการคาน (Lever)", "หลักการลิ่ม (Wedge)", "หลักการรอก (Pulley)", "หลักการเฟือง (Gear)"], ans: "หลักการคาน (Lever)" },
+            { q: "จิ๊กที่สามารถหมุนชิ้นงานเพื่อเจาะรูได้หลายๆ ด้าน เรียกว่าจิ๊กประเภทใด?", options: ["Trunnion Jig / Indexing Jig", "Leaf Jig", "Template Jig", "Sandwich Jig"], ans: "Trunnion Jig / Indexing Jig" },
+            { q: "การลบคม (Chamfer) ที่ปลายหมุดกำหนดตำแหน่ง (Locating Pin) มีประโยชน์อย่างไร?", options: ["ช่วยให้นำชิ้นงานสวมเข้าได้ง่ายขึ้น", "เพิ่มความสวยงาม", "ลดน้ำหนักของจิ๊ก", "ลดต้นทุนการผลิตจิ๊ก"], ans: "ช่วยให้นำชิ้นงานสวมเข้าได้ง่ายขึ้น" },
+            { q: "การออกแบบตัวจับยึด (Clamping) ที่ดีควรวางแคลมป์ไว้ตรงข้ามกับสิ่งใด?", options: ["ตัวกำหนดตำแหน่ง (Locator)", "เครื่องมือตัด (Cutting Tool)", "ส่วนที่บางที่สุดของชิ้นงาน", "รูที่ต้องการเจาะ"], ans: "ตัวกำหนดตำแหน่ง (Locator)" },
+            { q: "Modular Fixturing System มีข้อดีอย่างไร?", options: ["สามารถถอดประกอบและปรับเปลี่ยนเพื่อใช้กับชิ้นงานอื่นได้", "มีราคาถูกกว่าฟิกเจอร์แบบสร้างเฉพาะกิจมาก", "ทนทานที่สุดเนื่องจากเชื่อมติดกันถาวร", "ไม่ต้องใช้ความรู้ในการประกอบ"], ans: "สามารถถอดประกอบและปรับเปลี่ยนเพื่อใช้กับชิ้นงานอื่นได้" },
+            { q: "พิกัดความเผื่อ (Tolerance) ของจิ๊กฟิกเจอร์ ควรเป็นสัดส่วนเท่าใดของพิกัดความเผื่อของชิ้นงานโดยประมาณ?", options: ["20% - 50%", "100%", "200%", "0%"], ans: "20% - 50%" },
+            { q: "Cam Clamp อาศัยหลักการใดในการจับยึด?", options: ["ส่วนโค้งเยื้องศูนย์ (Eccentric curve)", "แรงดันไฮดรอลิก", "แม่เหล็กไฟฟ้า", "สปริงรับแรงดึง"], ans: "ส่วนโค้งเยื้องศูนย์ (Eccentric curve)" },
+            { q: "การหลบมุม (Relief) ที่มุมด้านในของตัวกำหนดตำแหน่ง มีความจำเป็นเพราะเหตุใด?", options: ["เพื่อป้องกันเศษโลหะหรือครีบชิ้นงานดันให้ชิ้นงานเอียง", "เพื่อลดน้ำหนักเหล็ก", "เพื่อความสวยงามของการออกแบบ", "เพื่อประหยัดน้ำยาหล่อเย็น"], ans: "เพื่อป้องกันเศษโลหะหรือครีบชิ้นงานดันให้ชิ้นงานเอียง" }
+        ];
+
+        // 3. หมวด: เกจในงานเครื่องมือกล (25 ข้อ)
+        const bank3 = [
+            { q: "เกจชนิดใดใช้ตรวจสอบขนาดเพลานอก ว่าอยู่ในพิกัดที่กำหนดหรือไม่?", options: ["Ring Gauge", "Plug Gauge", "Feeler Gauge", "Thread Pitch Gauge"], ans: "Ring Gauge" },
+            { q: "ด้าน Go และ No-Go ของ Plug Gauge มีลักษณะอย่างไรเมื่อมองด้วยตาเปล่า?", options: ["ด้าน Go จะยาวกว่าด้าน No-Go", "ด้าน No-Go จะยาวกว่าด้าน Go", "ยาวเท่ากันพอดี", "ด้าน Go มีรอยบาก"], ans: "ด้าน Go จะยาวกว่าด้าน No-Go" },
+            { q: "หลักการของ Taylor (Taylor's Principle) สำหรับเกจขีดจำกัด (Limit Gauge) กล่าวไว้ว่าอย่างไร?", options: ["Go Gauge ต้องตรวจสอบขนาดพร้อมกันทั้งรูปทรง No-Go Gauge ตรวจเฉพาะขนาดทีละมิติ", "Go Gauge ต้องสั้น No-Go Gauge ต้องยาว", "เกจทุกชิ้นต้องทำจากเหล็กไร้สนิม", "เกจต้องตรวจสอบได้ทั้งความโตและความเรียบผิวพร้อมกัน"], ans: "Go Gauge ต้องตรวจสอบขนาดพร้อมกันทั้งรูปทรง No-Go Gauge ตรวจเฉพาะขนาดทีละมิติ" },
+            { q: "Snap Gauge นิยมใช้สำหรับวัดชิ้นงานประเภทใด?", options: ["ขนาดเส้นผ่าศูนย์กลางภายนอก หรือความหนาชิ้นงาน", "ความลึกของรูเจาะ", "องศาของมุมเอียง", "ขนาดเกลียวใน"], ans: "ขนาดเส้นผ่าศูนย์กลางภายนอก หรือความหนาชิ้นงาน" },
+            { q: "Slip Gauges (Gauge Blocks) มักเรียกอีกชื่อหนึ่งว่าอะไร?", options: ["Johansson Blocks", "Taylor Blocks", "Vernier Blocks", "Dial Blocks"], ans: "Johansson Blocks" },
+            { q: "วิธีการนำ Slip Gauge มาประกบติดกันเพื่อรวมขนาด เรียกว่าอะไร?", options: ["Wringing", "Sliding", "Pressing", "Welding"], ans: "Wringing" },
+            { q: "Dial Indicator (ไดอัลเกจ) มีหน้าที่หลักในการวัดสิ่งใด?", options: ["วัดความเบี่ยงเบนหรือความคลาดเคลื่อนทางเรขาคณิต (เช่น ความเป็นศูนย์)", "วัดความยาวชิ้นงานแบบหยาบ", "วัดอุณหภูมิผิวชิ้นงาน", "วัดความแข็งของเหล็ก"], ans: "วัดความเบี่ยงเบนหรือความคลาดเคลื่อนทางเรขาคณิต (เช่น ความเป็นศูนย์)" },
+            { q: "Feeler Gauge มีลักษณะและประโยชน์การใช้งานอย่างไร?", options: ["แผ่นเหล็กบางๆ หลายขนาด ใช้สอดวัดระยะห่าง (Clearance) หรือช่องว่าง", "เป็นเกลียว ใช้ตรวจสอบระยะพิตช์เกลียว", "เป็นแท่งกลมๆ ใช้ตรวจสอบรู", "เป็นวงแหวน ใช้ตรวจสอบขนาดเพลา"], ans: "แผ่นเหล็กบางๆ หลายขนาด ใช้สอดวัดระยะห่าง (Clearance) หรือช่องว่าง" },
+            { q: "เครื่องมือใดใช้อ่านค่าความละเอียดได้ถึง 0.01 มม. ด้วยการหมุนปลอกเกลียว?", options: ["Micrometer (ไมโครมิเตอร์)", "Vernier Caliper (เวอร์เนียร์คาลิปเปอร์)", "Steel Rule (บรรทัดเหล็ก)", "Tape Measure (ตลับเมตร)"], ans: "Micrometer (ไมโครมิเตอร์)" },
+            { q: "บนเวอร์เนียร์คาลิปเปอร์ (Vernier Caliper) สเกลหลัก (Main Scale) และสเกลเลื่อน (Vernier Scale) ทำงานร่วมกันเพื่ออะไร?", options: ["เพิ่มความละเอียดในการอ่านค่า", "เพื่อสลับหน่วยวัดนิ้วกับมิลลิเมตร", "เพื่อวัดอุณหภูมิ", "เพื่อป้องกันการอ่านผิดพลาด"], ans: "เพิ่มความละเอียดในการอ่านค่า" },
+            { q: "Sine Bar เป็นเครื่องมือที่ใช้ร่วมกับ Slip Gauge เพื่อวัดสิ่งใด?", options: ["วัดหรือตั้งค่ามุม (Angle) อย่างแม่นยำ", "วัดเส้นผ่านศูนย์กลางวงกลม", "วัดความเรียบผิวชิ้นงาน", "วัดความลึกของรู"], ans: "วัดหรือตั้งค่ามุม (Angle) อย่างแม่นยำ" },
+            { q: "เกจวัดเกลียว (Thread Gauge) มีทั้งแบบปลั๊กและริง ใช้เพื่อตรวจสอบสิ่งใด?", options: ["ความถูกต้องของระยะพิตช์และรูปร่างเกลียว (Pitch and Profile)", "ความแข็งของเกลียว", "ทิศทางการหมุนของเกลียว", "ความลึกของเกลียวเทียบกับหัวน็อต"], ans: "ความถูกต้องของระยะพิตช์และรูปร่างเกลียว (Pitch and Profile)" },
+            { q: "Profile Projector (เครื่องฉายแสงเงา) ใช้หลักการใดในการวัดชิ้นงาน?", options: ["ขยายเงาของชิ้นงานตกกระทบลงบนฉากรับเพื่อวัดขนาดและรูปทรง", "ใช้เลเซอร์ยิงสะท้อนกลับ", "ใช้เข็มสัมผัสผิวชิ้นงานแล้วบันทึกค่า", "ใช้หลักการเหนี่ยวนำแม่เหล็กไฟฟ้า"], ans: "ขยายเงาของชิ้นงานตกกระทบลงบนฉากรับเพื่อวัดขนาดและรูปทรง" },
+            { q: "Tolerance (พิกัดความเผื่อ) หมายถึงสิ่งใดในงานมาตรวิทยา?", options: ["ผลต่างระหว่างขนาดพิกัดสูงสุดและขนาดพิกัดต่ำสุดที่ยอมรับได้", "ขนาดที่แม่นยำที่สุดที่วาดในแบบสั่งงาน", "ข้อผิดพลาดของเครื่องมือวัด", "การขยายตัวของชิ้นงานเมื่อโดนความร้อน"], ans: "ผลต่างระหว่างขนาดพิกัดสูงสุดและขนาดพิกัดต่ำสุดที่ยอมรับได้" },
+            { q: "Fit (ระบบงานสวม) แบบใดที่ขนาดของเพลาใหญ่กว่ารูเสมอ?", options: ["Interference Fit (งานสวมอัด)", "Clearance Fit (งานสวมคลอน)", "Transition Fit (งานสวมพอดี)", "Loose Fit (งานสวมหลวม)"], ans: "Interference Fit (งานสวมอัด)" },
+            { q: "ถ้าด้าน Go ของ Plug Gauge สวมเข้าในรูได้ แต่ด้าน No-Go สวมไม่ได้ หมายความว่าอย่างไร?", options: ["รูชิ้นงานมีขนาดถูกต้องตามพิกัดยอมรับได้ (Pass)", "รูชิ้นงานเล็กเกินไป", "รูชิ้นงานใหญ่เกินไป", "เกจชำรุด"], ans: "รูชิ้นงานมีขนาดถูกต้องตามพิกัดยอมรับได้ (Pass)" },
+            { q: "ข้อผิดพลาดพารัลแลกซ์ (Parallax Error) ในการวัดเกิดจากสาเหตุใด?", options: ["การมองสเกลในมุมที่เอียง ไม่ตั้งฉากกับสายตา", "เครื่องมือวัดไม่ได้ปรับศูนย์ (Zero Error)", "อุณหภูมิห้องไม่คงที่", "แรงกดเครื่องมือวัดมากเกินไป"], ans: "การมองสเกลในมุมที่เอียง ไม่ตั้งฉากกับสายตา" },
+            { q: "เกจทดสอบความเรียบผิว (Surface Roughness Comparator) ใช้วิธีใดในการตรวจสอบ?", options: ["การมองเปรียบเทียบด้วยสายตาและการใช้เล็บขูดสัมผัส", "การยิงเลเซอร์", "การใช้กล้องจุลทรรศน์", "การวัดด้วยไดอัลเกจ"], ans: "การมองเปรียบเทียบด้วยสายตาและการใช้เล็บขูดสัมผัส" },
+            { q: "อุณหภูมิอ้างอิงมาตรฐาน (Standard Reference Temperature) ในงานมาตรวิทยาเชิงมิติ ถูกกำหนดไว้ที่เท่าใด?", options: ["20 องศาเซลเซียส (68 F)", "25 องศาเซลเซียส", "0 องศาเซลเซียส", "30 องศาเซลเซียส"], ans: "20 องศาเซลเซียส (68 F)" },
+            { q: "เกจชนิดใดใช้ตรวจสอบรัศมีความโค้งของชิ้นงาน?", options: ["Radius Gauge (เกจวัดรัศมี)", "Taper Gauge", "Depth Gauge", "Telescoping Gauge"], ans: "Radius Gauge (เกจวัดรัศมี)" },
+            { q: "ระบบสวม (Limits and Fits) ตามมาตรฐาน ISO มักใช้อักษรภาษาอังกฤษตัวพิมพ์ใหญ่ (เช่น H7) เพื่อระบุค่าพิกัดความเผื่อของอะไร?", options: ["ขนาดของรู (Hole)", "ขนาดของเพลา (Shaft)", "ความเรียบผิว", "ชนิดของวัสดุ"], ans: "ขนาดของรู (Hole)" },
+            { q: "ไมโครมิเตอร์วัดนอก (Outside Micrometer) มีชิ้นส่วนใดที่ช่วยควบคุมแรงกดให้สม่ำเสมอขณะวัด?", options: ["Ratchet Stop (ชุดปลอกลื่น)", "Spindle Lock", "Thimble", "Anvil"], ans: "Ratchet Stop (ชุดปลอกลื่น)" },
+            { q: "การสอบเทียบเครื่องมือวัด (Calibration) คือกระบวนการใด?", options: ["การเปรียบเทียบค่าที่อ่านได้จากเครื่องมือวัดกับค่ามาตรฐานอ้างอิง", "การซ่อมแซมเครื่องมือวัดที่ชำรุด", "การทำความสะอาดเครื่องมือวัด", "การออกแบบเครื่องมือวัดใหม่"], ans: "การเปรียบเทียบค่าที่อ่านได้จากเครื่องมือวัดกับค่ามาตรฐานอ้างอิง" },
+            { q: "Telescoping Gauge เป็นเครื่องมือวัดประเภทใด?", options: ["เครื่องมือถ่ายทอดขนาด (Transfer Tool) ต้องใช้วัดซ้ำด้วยไมโครมิเตอร์", "เครื่องมือวัดแบบอ่านค่าได้โดยตรง", "เกจขีดจำกัด (Limit Gauge)", "เครื่องมือวัดมุม"], ans: "เครื่องมือถ่ายทอดขนาด (Transfer Tool) ต้องใช้วัดซ้ำด้วยไมโครมิเตอร์" },
+            { q: "คุณสมบัติสำคัญที่สุดของวัสดุที่ใช้ทำเกจบล็อก (Gauge Blocks) คืออะไร?", options: ["มีความเสถียรของขนาดสูงมาก ทนทานการสึกหรอ และขัดเรียบได้สุดยอด", "มีน้ำหนักเบา", "สามารถนำไฟฟ้าได้ดี", "ทนทานต่อสารเคมีทุกชนิด"], ans: "มีความเสถียรของขนาดสูงมาก ทนทานการสึกหรอ และขัดเรียบได้สุดยอด" }
+        ];
+
+        // 4. หมวด: การขับเคลื่อนและระบบส่งกำลัง (25 ข้อ)
+        const bank4 = [
+            { q: "ระบบส่งกำลังชนิดใดที่ไม่เกิดการลื่นไถล (Slip) แน่นอน?", options: ["เฟือง (Gear)", "สายพานแบน (Flat Belt)", "ล้อแรงเสียดทาน (Friction Wheel)", "สายพาน V (V-Belt)"], ans: "เฟือง (Gear)" },
+            { q: "ข้อใดคือข้อดีหลักของการส่งกำลังด้วยสายพาน?", options: ["ดูดซับแรงกระชากได้ดี เงียบ และส่งกำลังระยะไกลได้", "ให้อัตราทดที่แน่นอนเป๊ะ ไม่มีการลื่นไถล", "ทนความร้อนสูงมาก", "ส่งกำลังได้สูงที่สุดเมื่อเทียบกับเฟือง"], ans: "ดูดซับแรงกระชากได้ดี เงียบ และส่งกำลังระยะไกลได้" },
+            { q: "เฟืองชนิดใดที่ฟันเฟืองทำมุมเฉียงกับแกนหมุน ช่วยให้ทำงานได้เงียบและรับโหลดได้มากกว่าเฟืองตรง?", options: ["เฟืองเฉียง (Helical Gear)", "เฟืองตรง (Spur Gear)", "เฟืองดอกจอก (Bevel Gear)", "เฟืองตัวหนอน (Worm Gear)"], ans: "เฟืองเฉียง (Helical Gear)" },
+            { q: "หากต้องการส่งกำลังระหว่างเพลาที่ตั้งฉากกันและตัดกัน ควรใช้เฟืองชนิดใด?", options: ["เฟืองดอกจอก (Bevel Gear)", "เฟืองตรง (Spur Gear)", "เฟืองสะพาน (Rack and Pinion)", "เฟืองก้างปลา (Herringbone Gear)"], ans: "เฟืองดอกจอก (Bevel Gear)" },
+            { q: "คุณสมบัติเด่นของเฟืองตัวหนอน (Worm Gear) คืออะไร?", options: ["ให้อัตราทดสูงมาก และสามารถล็อกตัวเองไม่ให้หมุนกลับได้ (Self-locking)", "ส่งกำลังระยะไกลที่สุด", "มีประสิทธิภาพการส่งกำลังสูงสุดเกือบ 100%", "เพลาทั้งสองต้องขนานกัน"], ans: "ให้อัตราทดสูงมาก และสามารถล็อกตัวเองไม่ให้หมุนกลับได้ (Self-locking)" },
+            { q: "โซ่ส่งกำลัง (Roller Chain) นิยมใช้ในกรณีใด?", options: ["ส่งกำลังระยะปานกลาง ต้องการอัตราทดที่แน่นอน และโหลดสูง", "ส่งกำลังที่ความเร็วรอบสูงมากๆ", "ส่งกำลังแบบต้องการความเงียบสนิท", "เมื่อเพลาทั้งสองไม่ขนานกัน"], ans: "ส่งกำลังระยะปานกลาง ต้องการอัตราทดที่แน่นอน และโหลดสูง" },
+            { q: "ข้อใดคือหน้าที่ของ 'คลัตช์' (Clutch) ในระบบส่งกำลัง?", options: ["ตัดและต่อการส่งกำลังระหว่างเพลาขับและเพลาตามขณะเครื่องยนต์ยังหมุนอยู่", "ลดความเร็วของเพลา", "เปลี่ยนทิศทางการหมุนอย่างถาวร", "เพิ่มแรงบิดของระบบ"], ans: "ตัดและต่อการส่งกำลังระหว่างเพลาขับและเพลาตามขณะเครื่องยนต์ยังหมุนอยู่" },
+            { q: "ตลับลูกปืน (Rolling Bearing) อาศัยหลักการใดเพื่อลดความฝืด?", options: ["ความเสียดทานแบบกลิ้ง (Rolling Friction)", "ความเสียดทานแบบเลื่อน (Sliding Friction)", "การลอยตัวด้วยแม่เหล็ก", "การหล่อลื่นด้วยของแข็ง"], ans: "ความเสียดทานแบบกลิ้ง (Rolling Friction)" },
+            { q: "สายพานไทม์มิ่ง (Timing Belt) หรือสายพานฟัน มีข้อดีเหนือสายพาน V อย่างไร?", options: ["ไม่มีการลื่นไถล (No Slip) จึงใช้นำทางเพลาลูกเบี้ยวได้", "ราคาถูกกว่ามาก", "ทนทานต่อน้ำมันได้ 100%", "สามารถบิดไขว้สายพานได้ง่าย"], ans: "ไม่มีการลื่นไถล (No Slip) จึงใช้นำทางเพลาลูกเบี้ยวได้" },
+            { q: "อุปกรณ์ใดที่ทำหน้าที่เชื่อมต่อเพลาสองเส้นให้หมุนไปด้วยกันอย่างถาวร (ถอดประกอบได้ขณะหยุดเครื่อง)?", options: ["คัปปลิ้ง / ยอย (Coupling)", "คลัตช์ (Clutch)", "มู่เล่ย์แบบขั้นบันได (Step Cone Pulley)", "มู่เล่ย์ (Pulley)"], ans: "คัปปลิ้ง / ยอย (Coupling)" },
+            { q: "อัตราทด (Speed Ratio) ของชุดเฟืองคำนวณได้อย่างไร?", options: ["จำนวนฟันของเฟืองตาม หารด้วย จำนวนฟันของเฟืองขับ (Z2/Z1)", "จำนวนฟันเฟืองขับ หารด้วย จำนวนฟันเฟืองตาม", "รัศมีเฟืองขับ หารด้วย รัศมีเฟืองตาม", "ความเร็วรอบเฟืองตาม หารด้วย ความเร็วรอบเฟืองขับ"], ans: "จำนวนฟันของเฟืองตาม หารด้วย จำนวนฟันของเฟืองขับ (Z2/Z1)" },
+            { q: "Rack and Pinion (เฟืองสะพาน) มีหน้าที่เพื่อแปลงการเคลื่อนที่แบบใด?", options: ["แปลงการหมุนเป็นการเคลื่อนที่แนวเส้นตรง หรือสลับกัน", "แปลงการเคลื่อนที่แนวเส้นตรงเป็นแนวเส้นตรงทิศทางอื่น", "แปลงความเร็วให้เพิ่มขึ้น 10 เท่า", "ล็อกเพลาไม่ให้ขยับ"], ans: "แปลงการหมุนเป็นการเคลื่อนที่แนวเส้นตรง หรือสลับกัน" },
+            { q: "ระบบส่งกำลังด้วยล้อแรงเสียดทาน (Friction Drive) มีข้อเสียหลักคืออะไร?", options: ["เกิดการลื่นไถลได้ง่ายเมื่อรับโหลดสูงเกินไป", "มีเสียงดังมากที่สุด", "ราคาสูงมาก", "ต้องใช้น้ำมันหล่อลื่นจำนวนมหาศาล"], ans: "เกิดการลื่นไถลได้ง่ายเมื่อรับโหลดสูงเกินไป" },
+            { q: "ตลับลูกปืนเม็ดเรียว (Tapered Roller Bearing) เหมาะสำหรับรับแรงในทิศทางใด?", options: ["รับแรงในแนวรัศมี (Radial) และแนวแกน (Axial) ได้พร้อมกัน", "รับแรงในแนวรัศมีได้อย่างเดียว", "รับแรงในแนวแกนได้อย่างเดียว", "ใช้กับโหลดที่เบามากๆ"], ans: "รับแรงในแนวรัศมี (Radial) และแนวแกน (Axial) ได้พร้อมกัน" },
+            { q: "สายพาน V (V-Belt) ส่งกำลังได้ดีกว่าสายพานแบนเพราะเหตุใด?", options: ["พื้นที่สัมผัสที่ร่องมู่เล่ย์สร้างแรงเสียดทานและแรงรูด (Wedging Action) ได้ดีกว่า", "วัสดุทำจากเหล็กกล้าผสม", "น้ำหนักเบากว่า", "ไม่ต้องตั้งความตึงสายพาน"], ans: "พื้นที่สัมผัสที่ร่องมู่เล่ย์สร้างแรงเสียดทานและแรงรูด (Wedging Action) ได้ดีกว่า" },
+            { q: "Idler Gear (เฟืองสะพาน/เฟืองกลาง) ในระบบขบวนเฟือง มีหน้าที่หลักคืออะไร?", options: ["ทำให้เฟืองขับและเฟืองตามตัวสุดท้ายหมุนไปในทิศทางเดียวกัน", "เพิ่มความเร็วรอบให้ระบบ", "ลดความเร็วรอบให้ระบบ", "เปลี่ยนการเคลื่อนที่เป็นแนวตรง"], ans: "ทำให้เฟืองขับและเฟืองตามตัวสุดท้ายหมุนไปในทิศทางเดียวกัน" },
+            { q: "Pitch Circle (วงกลมพิตช์) ในทฤษฎีเฟือง คืออะไร?", options: ["วงกลมสมมติที่แสดงจุดสัมผัสกลิ้งของเฟืองคู่ที่ขบกัน", "วงกลมวงนอกสุดของยอดฟันเฟือง", "วงกลมด้านในโคนฟันเฟือง", "รูกลางของเฟืองสำหรับสวมเพลา"], ans: "วงกลมสมมติที่แสดงจุดสัมผัสกลิ้งของเฟืองคู่ที่ขบกัน" },
+            { q: "สารหล่อลื่น (Lubricant) ในระบบเกียร์ มีประโยชน์อย่างไร?", options: ["ลดความฝืด ระบายความร้อน และป้องกันสนิม", "เพิ่มแรงเสียดทานเพื่อให้เฟืองจับกันแน่นขึ้น", "ลดขนาดของเฟืองลง", "ป้องกันกระแสไฟฟ้ารั่ว"], ans: "ลดความฝืด ระบายความร้อน และป้องกันสนิม" },
+            { q: "ร่องลิ่ม (Keyway) บนเพลาและดุมล้อ ทำหน้าที่อะไร?", options: ["ใช้ใส่ลิ่ม (Key) เพื่อส่งถ่ายแรงบิดไม่ให้ล้อและเพลาหมุนรูด", "ใช้สำหรับหยอดน้ำมันหล่อลื่น", "เพื่อลดความเครียดในเนื้อวัสดุ", "เพื่อระบายความร้อนของเพลา"], ans: "ใช้ใส่ลิ่ม (Key) เพื่อส่งถ่ายแรงบิดไม่ให้ล้อและเพลาหมุนรูด" },
+            { q: "Universal Joint (ยอยกากบาท) ใช้สำหรับต่อเพลาในลักษณะใด?", options: ["เพลาสองเส้นที่ทำมุมตัดกันเล็กน้อยและอาจมีการขยับตัวได้", "เพลาสองเส้นที่ขนานกันพอดีเป๊ะ", "เพลาสองเส้นที่ตั้งฉากกัน 90 องศาตายตัว", "เพลาที่ต้องการตัดต่อกำลังแบบคลัตช์"], ans: "เพลาสองเส้นที่ทำมุมตัดกันเล็กน้อยและอาจมีการขยับตัวได้" },
+            { q: "มู่เล่ย์แบบขั้นบันได (Step Cone Pulley) ที่มักพบในเครื่องเจาะแท่น มีหน้าที่หลักเพื่ออะไร?", options: ["ปรับเปลี่ยนความเร็วรอบของแกนเพลา", "ป้องกันสายพานลื่นหลุดจากร่อง", "เพิ่มความตึงให้กับสายพานโดยอัตโนมัติ", "ใช้เป็นตัวลดความร้อนของสายพาน"], ans: "ปรับเปลี่ยนความเร็วรอบของแกนเพลา" },
+            { q: "ลูกปืนกันรุน (Thrust Bearing) ถูกออกแบบมาเพื่อรับแรงในทิศทางใดเป็นหลัก?", options: ["แรงในแนวแกนเพลา (Axial load)", "แรงในแนวรัศมี (Radial load)", "แรงบิด (Torsional load)", "แรงเฉือน (Shear load)"], ans: "แรงในแนวแกนเพลา (Axial load)" },
+            { q: "การคำนวณอัตราทดของระบบสายพาน อ้างอิงจากตัวแปรใด?", options: ["เส้นผ่านศูนย์กลางของมู่เล่ย์ตาม หารด้วย มู่เล่ย์ขับ", "ความหนาของสายพาน", "ความยาวรอบรูปสายพาน", "ระยะห่างระหว่างศูนย์กลางเพลา"], ans: "เส้นผ่านศูนย์กลางของมู่เล่ย์ตาม หารด้วย มู่เล่ย์ขับ" },
+            { q: "เฟืองก้างปลา (Herringbone Gear) มีข้อดีที่สำคัญเหนือเฟืองเฉียงทั่วไปอย่างไร?", options: ["หักล้างแรงผลักในแนวแกน (Axial Thrust) ทำให้เพลาไม่ถูกดัน", "ผลิตได้ง่ายและราคาถูกกว่า", "เหมาะกับการหมุนด้วยความเร็วต่ำๆ เท่านั้น", "ไม่ต้องใช้น้ำมันหล่อลื่น"], ans: "หักล้างแรงผลักในแนวแกน (Axial Thrust) ทำให้เพลาไม่ถูกดัน" },
+            { q: "เฟืองสะพาน (Rack) ในทางกลศาสตร์ ถูกเปรียบเทียบว่ามีลักษณะคล้ายกับเฟืองตรง (Spur Gear) แบบใด?", options: ["เฟืองตรงที่มีรัศมีวงกลมพิตช์เป็นอนันต์ (เส้นตรง)", "เฟืองตรงที่มีจำนวนฟันเพียง 1 ซี่", "เฟืองตรงที่ทำจากวัสดุยืดหยุ่นได้", "เฟืองตรงที่มีฟันเอียงสลับซ้ายขวา"], ans: "เฟืองตรงที่มีรัศมีวงกลมพิตช์เป็นอนันต์ (เส้นตรง)" }
+        ];
+
+        // ==========================================
+        // ตัวแปรสถานะระบบ
+        // ==========================================
+        let studentData = { id: "", name: "", email: "", uid: "" };
+        let final100Questions = [];
+        let userAnswers = new Array(10).fill(null); // เก็บคำตอบสำหรับ 10 ข้อ
+        let currentQIndex = 0;
+        let timerInterval;
+        let secondsElapsed = 0;
+        let cheatCount = 0;
+
+        window.startQuiz = function() {
+            const idInput = document.getElementById('student-id');
+            const idVal = idInput ? idInput.value.trim() : "";
+
+            if (!idVal) {
+                Swal.fire('แจ้งเตือน', 'กรุณากรอกรหัสนักศึกษาก่อนเริ่มสอบ', 'warning');
+                return;
+            }
+
+            studentData.id = idVal;
+            const dispNameEl = document.getElementById('display-name');
+            if (dispNameEl) dispNameEl.textContent = `${studentData.name} (${studentData.id})`;
+
+            // เพิ่ม Tag หมวดหมู่
+            const p1 = bank1.map(item => ({ ...item, category: "การตัดเฉือนฯ" }));
+            const p2 = bank2.map(item => ({ ...item, category: "จิ๊กและฟิกเจอร์" }));
+            const p3 = bank3.map(item => ({ ...item, category: "เกจวัด" }));
+            const p4 = bank4.map(item => ({ ...item, category: "ระบบส่งกำลัง" }));
+
+            // สุ่มจากคลังทั้งหมด แล้วเลือกมาแค่ 10 ข้อสำหรับการทดสอบ
+            final100Questions = [...p1, ...p2, ...p3, ...p4]
+                .sort(() => 0.5 - Math.random())
+                .map(q => ({
+                    ...q,
+                    shuffledOptions: [...q.options].sort(() => 0.5 - Math.random())
+                }))
+                .slice(0, 10); // <--- ตัดเอามาแค่ 10 ข้อ
+
+            // Reset state
+            userAnswers = new Array(10).fill(null);
+            currentQIndex = 0;
+            cheatCount = 0;
+            secondsElapsed = 0;
+
+            switchPage('start-page', 'quiz-page');
+            
+            // เริ่มจับเวลา
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const m = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const s = (secondsElapsed % 60).toString().padStart(2, '0');
+                const tEl = document.getElementById('timer');
+                if (tEl) tEl.textContent = `${m}:${s}`;
+            }, 1000);
+
+            document.addEventListener('visibilitychange', handleAntiCheat);
+            loadQuestion();
+        };
+
+        function loadQuestion() {
+            const qData = final100Questions[currentQIndex];
+            
+            const numEl = document.getElementById('current-question-num');
+            const txtEl = document.getElementById('question-text');
+            const catEl = document.getElementById('category-badge');
+            
+            if (numEl) numEl.textContent = currentQIndex + 1;
+            if (txtEl) txtEl.textContent = `${currentQIndex + 1}. ${qData.q}`;
+            if (catEl) catEl.textContent = `หมวด: ${qData.category}`;
+
+            const container = document.getElementById('options-container');
+            if (container) {
+                container.innerHTML = '';
+                // สร้างปุ่มตัวเลือก
+                qData.shuffledOptions.forEach((opt, index) => {
+                    const btn = document.createElement('button');
+                    const isSelected = userAnswers[currentQIndex] === opt;
+                    
+                    const baseClasses = "option-btn w-full text-left p-4 rounded-xl border-2 font-medium transition-colors";
+                    if (isSelected) {
+                        btn.className = `${baseClasses} selected border-blue-500 bg-blue-50 text-blue-800`;
+                    } else {
+                        btn.className = `${baseClasses} border-slate-200 bg-white text-slate-700 hover:bg-slate-50`;
+                    }
+
+                    const spanClass = isSelected ? 'border-blue-500 bg-blue-500 text-white' : 'border-slate-300 text-slate-500';
+                    btn.innerHTML = `<span class="inline-block w-6 h-6 rounded-full border-2 text-center text-sm leading-5 mr-3 ${spanClass}">${['A','B','C','D'][index]}</span> ${opt}`;
+                    
+                    btn.onclick = () => selectOption(opt);
+                    container.appendChild(btn);
+                });
+            }
+
+            // ควบคุมปุ่ม ย้อนกลับ 
+            const prevBtn = document.getElementById('prev-btn');
+            if (prevBtn) {
+                if (currentQIndex === 0) {
+                    prevBtn.classList.add('hidden');
+                } else {
+                    prevBtn.classList.remove('hidden');
+                }
+            }
+
+            updateNextBtn();
+        }
+
+        window.selectOption = function(selectedText) {
+            userAnswers[currentQIndex] = selectedText; 
+            loadQuestion(); 
+        };
+
+        function updateNextBtn() {
+            const btn = document.getElementById('next-btn');
+            if (!btn) return;
+            
+            if (userAnswers[currentQIndex] !== null) {
+                btn.disabled = false;
+                btn.classList.remove('bg-slate-200', 'text-slate-400', 'cursor-not-allowed');
+                btn.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-700');
+                // เปลี่ยนเป็นส่งข้อสอบเมื่อถึงข้อที่ 10 (index 9)
+                btn.textContent = currentQIndex === 9 ? 'ส่งข้อสอบ' : 'ข้อถัดไป';
+            } else {
+                btn.disabled = true;
+                btn.classList.add('bg-slate-200', 'text-slate-400', 'cursor-not-allowed');
+                btn.classList.remove('bg-blue-600', 'text-white', 'hover:bg-blue-700');
+                btn.textContent = 'กรุณาเลือกคำตอบ';
+            }
+        }
+
+        window.prevQuestion = function() {
+            if (currentQIndex > 0) {
+                currentQIndex--;
+                loadQuestion();
+            }
+        };
+
+        window.nextQuestion = async function() {
+            // ไปข้อต่อไปถ้ายังไม่ถึงข้อ 10 (index 9)
+            if (currentQIndex < 9) {
+                currentQIndex++;
+                loadQuestion();
+            } else {
+                await finishQuiz();
+            }
+        };
+
+        async function finishQuiz() {
+            clearInterval(timerInterval);
+            document.removeEventListener('visibilitychange', handleAntiCheat);
+            
+            // คำนวณคะแนนตอนส่งข้อสอบ
+            let score = 0;
+            for (let i = 0; i < final100Questions.length; i++) {
+                if (userAnswers[i] === final100Questions[i].ans) {
+                    score++;
+                }
+            }
+
+            const tEl = document.getElementById('timer');
+            const timeStr = tEl ? tEl.textContent : "00:00";
+            
+            const fsEl = document.getElementById('final-score');
+            const ftEl = document.getElementById('final-time');
+            const fcEl = document.getElementById('final-cheats');
+            
+            if (fsEl) fsEl.textContent = score;
+            if (ftEl) ftEl.textContent = timeStr;
+            if (fcEl) fcEl.textContent = cheatCount;
+
+            switchPage('quiz-page', 'loading-page');
+            const lt = document.getElementById('loading-text');
+            if (lt) lt.textContent = "กำลังบันทึกข้อมูลของคุณ...";
+
+            try {
+                // เพิ่มอีเมลและ UID เข้าไปในฐานข้อมูล
+                await addDoc(collection(db, "exam_results"), {
+                    student_id: studentData.id,
+                    student_name: studentData.name,
+                    student_email: studentData.email,
+                    uid: studentData.uid,
+                    score: score,
+                    total_score: 10,
+                    time_taken: timeStr,
+                    cheating_attempts: cheatCount,
+                    timestamp: serverTimestamp()
+                });
+                
+                switchPage('loading-page', 'result-page');
+            } catch (e) {
+                console.error("Error saving document: ", e);
+                switchPage('loading-page', 'result-page');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'บันทึกข้อมูลไม่สำเร็จ',
+                    html: `ระบบไม่สามารถส่งข้อมูลไปที่ฐานข้อมูลได้<br><span class="text-sm text-red-600 font-bold">Error: ${e.code || e.message}</span>`,
+                    confirmButtonColor: '#d33'
+                });
+            }
+        }
+
+        function handleAntiCheat() {
+            if (document.hidden) {
+                cheatCount++;
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'คำเตือนการทุจริต!',
+                    text: `ตรวจพบการสลับหน้าจอหรือพับหน้าต่าง (ครั้งที่ ${cheatCount}) ระบบได้บันทึกพฤติกรรมนี้ไว้แล้ว`,
+                    confirmButtonColor: '#f59e0b'
+                });
+            }
+        }
+
+        // ==========================================
+        // ระบบ Admin
+        // ==========================================
+        window.showAdmin = async function() {
+            const { value: password } = await Swal.fire({
+                title: 'ยืนยันตัวตนผู้สอน',
+                input: 'password',
+                inputPlaceholder: 'ใส่รหัสผ่าน...',
+                showCancelButton: true,
+                confirmButtonText: 'เข้าสู่ระบบ',
+                cancelButtonText: 'ยกเลิก'
+            });
+
+            if (password === 'admin123') { 
+                const actPage = getCurrentPageId();
+                switchPage(actPage, 'loading-page');
+                
+                const lt = document.getElementById('loading-text');
+                if (lt) lt.textContent = "กำลังดึงข้อมูลคะแนน...";
+                
+                await fetchAdminData();
+                switchPage('loading-page', 'admin-page');
+            } else if (password) {
+                Swal.fire('รหัสผ่านผิด!', 'คุณไม่มีสิทธิ์เข้าถึงส่วนนี้', 'error');
+            }
+        };
+
+        window.closeAdmin = function() {
+            const currentUser = auth.currentUser;
+            if (currentUser) {
+                switchPage('admin-page', 'start-page');
+                showStudentForm(currentUser);
+            } else {
+                switchPage('admin-page', 'start-page');
+                const bg = document.getElementById('btn-google-login');
+                const bt = document.getElementById('btn-test-login');
+                const sf = document.getElementById('student-form');
+                if (bg) bg.classList.remove('hidden');
+                if (bt) bt.classList.remove('hidden');
+                if (sf) sf.classList.add('hidden');
+            }
+        };
+
+        async function fetchAdminData() {
+            const tbody = document.getElementById('admin-tbody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            try {
+                const q = query(collection(db, "exam_results"));
+                const querySnapshot = await getDocs(q);
+                let dataList = [];
+                querySnapshot.forEach((doc) => {
+                    dataList.push(doc.data());
+                });
+
+                dataList.sort((a, b) => {
+                    if (!a.timestamp || !b.timestamp) return 0;
+                    return b.timestamp.toMillis() - a.timestamp.toMillis();
+                });
+
+                if (dataList.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan=\"7\" class=\"p-8 text-center text-slate-400\">ยังไม่มีข้อมูลการสอบ</td></tr>';
+                } else {
+                    dataList.forEach(d => {
+                        const dateStr = d.timestamp ? d.timestamp.toDate().toLocaleString('th-TH') : '-';
+                        const cheatClass = d.cheating_attempts > 0 ? 'text-red-500 font-bold' : 'text-slate-600';
+                        const emailDisplay = d.student_email || '<span class="text-slate-400">-</span>';
+                        // โชว์คะแนนเต็มจากฐานข้อมูล ถ้าไม่มีให้ใช้ 100
+                        const maxScore = d.total_score || 100;
+                        
+                        tbody.innerHTML += `
+                            <tr class="border-b hover:bg-blue-50 transition-colors">
+                                <td class="p-4">${dateStr}</td>
+                                <td class="p-4 font-mono">${d.student_id}</td>
+                                <td class="p-4">${d.student_name}</td>
+                                <td class="p-4 text-xs text-slate-500">${emailDisplay}</td>
+                                <td class="p-4 font-bold text-blue-600 text-center" data-t="n">${d.score}/${maxScore}</td>
+                                <td class="p-4 text-center">${d.time_taken}</td>
+                                <td class="p-4 text-center ${cheatClass}">${d.cheating_attempts || 0}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            } catch (e) {
+                console.error("Fetch data error:", e);
+                tbody.innerHTML = '<tr><td colspan=\"7\" class=\"p-4 text-center text-red-500\">เกิดข้อผิดพลาดในการดึงข้อมูลจาก Firebase</td></tr>';
+            }
+        }
+
+        window.exportToExcel = function() {
+            const table = document.getElementById('results-table');
+            if (!table) return;
+            const wb = XLSX.utils.table_to_book(table, {sheet: "Result", raw: true});
+            XLSX.writeFile(wb, "Machine_Tool_Exam_Results_Test.xlsx");
+        };
+
+        // ฟังก์ชันสำคัญที่ถูกปรับปรุงให้ทนทานต่อ Error
+        function switchPage(hideId, showId) {
+            const hideEl = document.getElementById(hideId);
+            const showEl = document.getElementById(showId);
+            
+            // เช็คก่อนว่ามี element นี้อยู่จริง ค่อยสั่งทำงาน
+            if (hideEl) hideEl.classList.add('hidden');
+            if (showEl) showEl.classList.remove('hidden');
+        }
+
+        // ค้นหาหน้าปัจจุบันอย่างปลอดภัย
+        function getCurrentPageId() {
+            const pages = ['start-page', 'quiz-page', 'result-page', 'admin-page', 'loading-page'];
+            for (let id of pages) {
+                const el = document.getElementById(id);
+                if (el && !el.classList.contains('hidden')) {
+                    return id;
+                }
+            }
+            return 'start-page';
+        }
+    </script>
+</body>
+</html>
