@@ -80,7 +80,7 @@
                     กฎการสอบ:
                 </h3>
                 <ul class="text-xs text-amber-700 list-disc list-inside space-y-1 ml-1">
-                    <li>ใช้บัญชี <b>Gmail</b> ในการระบุตัวตน</li>
+                    <li>ใช้บัญชี <b>@rmuti.ac.th</b> ในการระบุตัวตนเท่านั้น</li>
                     <li>ข้อสอบมี 100 ข้อ (เรียงลำดับปกติ ไม่สุ่มข้อ)</li>
                     <li>ห้ามสลับแท็บหรือพับหน้าจอเด็ดขาด (ระบบจะบันทึกการทุจริต)</li>            
                     <li>สามารถกดย้อนกลับเพื่อแก้ไขคำตอบได้</li>
@@ -235,6 +235,16 @@
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
+        // ==========================================
+        // 🌟 ตั้งค่าโดเมนและอีเมลผู้สอนที่นี่ 🌟
+        // ==========================================
+        const ALLOWED_DOMAIN = "@rmuti.ac.th";
+        
+        // ⚠️ สำคัญมาก: คุณต้องเปลี่ยนอีเมลด้านล่างนี้ ให้เป็นอีเมลที่คุณใช้ทดสอบระบบ (เช่น Gmail ส่วนตัวของคุณ) 
+        // ไม่เช่นนั้น ระบบจะเตะคุณออกเพราะอีเมลคุณไม่ใช่ @rmuti.ac.th ครับ!
+        const ADMIN_EMAILS = ["chaiwat@rmuti.ac.th"]; 
+        // ==========================================
+
         const loadingPage = document.getElementById('loading-page');
         const startPage = document.getElementById('start-page');
         const loadingText = document.getElementById('loading-text');
@@ -243,12 +253,26 @@
         if(startPage) startPage.classList.add('hidden');
         if(loadingText) loadingText.textContent = "กำลังตรวจสอบการเชื่อมต่อ...";
 
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if(loadingPage) loadingPage.classList.add('hidden');
             if(startPage) startPage.classList.remove('hidden');
             
             if (user) {
-                showStudentForm(user);
+                const isTestMode = user.isAnonymous;
+                const isAllowedDomain = user.email && user.email.endsWith(ALLOWED_DOMAIN);
+                const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
+
+                // ตรวจสอบสิทธิ์เมื่อโหลดหน้าเว็บ
+                if (isTestMode || isAllowedDomain || isAdmin) {
+                    showStudentForm(user);
+                } else {
+                    await signOut(auth); // เตะออกถ้าอีเมลผิดโดเมน
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ไม่อนุญาตให้เข้าใช้งาน',
+                        html: `ระบบจำกัดเฉพาะอีเมล <b>${ALLOWED_DOMAIN}</b> เท่านั้น<br><br><span class="text-sm text-slate-500">หากคุณเป็นผู้สอน กรุณาตรวจสอบว่าคุณได้พิมพ์อีเมล <b>${user.email}</b> ลงในตัวแปร ADMIN_EMAILS ในโค้ดแล้วหรือยังครับ</span>`
+                    });
+                }
             } else {
                 const btnGoogleLogin = document.getElementById('btn-google-login');
                 const btnTestLogin = document.getElementById('btn-test-login');
@@ -267,6 +291,22 @@
                 
                 const result = await signInWithPopup(auth, provider);
                 const user = result.user;
+
+                // --- ตรวจสอบโดเมนหลังล็อคอินสำเร็จ ---
+                const isAllowedDomain = user.email && user.email.endsWith(ALLOWED_DOMAIN);
+                const isAdmin = user.email && ADMIN_EMAILS.includes(user.email);
+
+                if (!isAllowedDomain && !isAdmin) {
+                    await signOut(auth); // บังคับออกจากระบบทันที
+                    switchPage('loading-page', 'start-page');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'อีเมลไม่ถูกต้อง',
+                        html: `ระบบจำกัดเฉพาะอีเมล <b>${ALLOWED_DOMAIN}</b> เท่านั้น<br><br><span class="text-sm text-slate-500">หากคุณเป็นผู้สอน กรุณาตรวจสอบว่าคุณได้พิมพ์อีเมล <b>${user.email}</b> ลงในตัวแปร ADMIN_EMAILS ในโค้ดแล้วหรือยังครับ</span>`
+                    });
+                    return; // หยุดการทำงาน
+                }
+                // -------------------------------------
                 
                 switchPage('loading-page', 'start-page');
                 showStudentForm(user);
@@ -494,7 +534,6 @@
         let secondsElapsed = 0;
         let cheatCount = 0;
 
-        // 🌟 แก้ไขจุดนี้: ระบบจัดข้อสอบแบบไม่สุ่ม (100 ข้อ)
         window.startQuiz = function() {
             const idInput = document.getElementById('student-id');
             const idVal = idInput ? idInput.value.trim() : "";
@@ -696,9 +735,6 @@
         // ==========================================
         // ระบบ Admin
         // ==========================================
-
-        // 🌟 ใส่ Email ของคุณที่นี่ (คนที่สามารถเข้าดูคะแนนได้) 🌟
-        const ADMIN_EMAILS = ["chaiwatwattanakul@gmail.com"]; 
 
         window.showAdmin = async function() {
             const user = auth.currentUser;
